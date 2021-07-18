@@ -1,0 +1,17 @@
+<%- include("partials/header"); -%>
+  <div class="roundbox <%=userData.status%>">
+    <h3><%="Name: "+ userData.name %></h3>
+    <h3><%="Email: "+ userData.email %></h3>
+    <h3><%="ID: "+ userData.id %></h3>
+    <h3><%="Gender: "+ userData.gender %></h3>
+    <h3><%="Status: "+ userData.status %></h3>
+  </div>
+
+
+  <div class="mybuttons">
+    <a class="btn btn-primary" href=<%= userData.id + "/posts" %>>Posts</a>
+    <a class="btn btn-primary" href=<%= userData.id + "/compose" %>>Create Post</a>
+  </div>
+
+
+<%- include("partials/footer"); -%>

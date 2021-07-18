@@ -1,0 +1,19 @@
+
+<%- include("partials/header"); -%>
+  <script>
+    var element = document.getElementById("user");
+  </script>
+    <h1> User Details :</h1>
+    <p>_________________________________</p>
+  <%  userData.forEach(function(user){ %>
+    <div id="user" class="roundbox <%= user.status %>">
+    <h2><%=user.name%></h2>
+    <p>
+    <%=user.email + " ... " %>
+    <a href="<%="mailto:"+ user.email %>"><i class="uil uil-envelope"></i></a>
+    </p>
+    <a href="/users/<%= user.id %>">More Details</a>
+    </div>
+    <% })%>
+
+<%- include("partials/footer"); -%>
