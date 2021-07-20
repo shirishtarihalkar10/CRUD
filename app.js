@@ -1,10 +1,9 @@
 //jshint esversion:6
-
+require('dotenv').config()
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const https = require("https");
-// const querystring = require('querystring');
 const axios = require("axios");
 
 const app = express();
@@ -21,6 +20,7 @@ app.use(express.static("public"));
 
 // GET function for displaying all users
 app.get("/users", function(req, res){
+  getUrl = url + process.env.KEY
   https.get(url,function(response){
     console.log(response.statusCode);
 
@@ -40,7 +40,7 @@ app.get("/users", function(req, res){
 app.get("/users/:userid",function(req,res){
 
   userRequestedId = req.params.userid;
-  userURL = url + "/" + userRequestedId;
+  userURL = url + "/" + userRequestedId + process.env.KEY
 
   https.get(userURL,function(response){
     console.log(response.statusCode);
@@ -60,7 +60,7 @@ app.get("/users/:userid",function(req,res){
 app.get("/users/:userid/posts",function(req,res){
 
   userRequestedId = req.params.userid;
-  userURL = url + "/" + userRequestedId + "/posts"
+  userURL = url + "/" + userRequestedId + "/posts" + process.env.KEY
 
   https.get(userURL,function(response){
     console.log(response.statusCode);
@@ -84,10 +84,11 @@ app.get("/users/:userid/compose",function(req,res){
 // POST the data entered by the user
 app.post("/users/:userid/compose", function(req, res){
   const userID = req.params.userid
-  const postUrl = "https://gorest.co.in/public/v1/users/"+userID+"/posts"
+  const postUrl = "https://gorest.co.in/public/v1/users/"+userID+"/posts" + process.env.KEY
   console.log(postUrl);
   const data = JSON.stringify({
     id: userID,
+    user_id: userID,
     title: req.body.postTitle,
     body: req.body.postBody
   })
@@ -102,7 +103,6 @@ app.post("/users/:userid/compose", function(req, res){
 
   res.redirect("/users");
 });
-
 
 
 
