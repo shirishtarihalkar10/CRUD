@@ -8,6 +8,7 @@ const axios = require("axios");
 
 const app = express();
 const url = "https://gorest.co.in/public/v1/users"
+const key = "?access-token=e2edc0743c42fdef76591140a60b87382508de6efe66cd7f8508e187ce2128ab"
 
 app.set('view engine','ejs');
 
@@ -20,6 +21,7 @@ app.use(express.static("public"));
 
 // GET function for displaying all users
 app.get("/users", function(req, res){
+
   getUrl = url + process.env.KEY
   https.get(url,function(response){
     console.log(response.statusCode);
@@ -40,7 +42,7 @@ app.get("/users", function(req, res){
 app.get("/users/:userid",function(req,res){
 
   userRequestedId = req.params.userid;
-  userURL = url + "/" + userRequestedId + process.env.KEY
+  userURL = url + "/" + userRequestedId + key
 
   https.get(userURL,function(response){
     console.log(response.statusCode);
@@ -60,7 +62,7 @@ app.get("/users/:userid",function(req,res){
 app.get("/users/:userid/posts",function(req,res){
 
   userRequestedId = req.params.userid;
-  userURL = url + "/" + userRequestedId + "/posts" + process.env.KEY
+  userURL = url + "/" + userRequestedId + "/posts" + key
 
   https.get(userURL,function(response){
     console.log(response.statusCode);
@@ -84,7 +86,7 @@ app.get("/users/:userid/compose",function(req,res){
 // POST the data entered by the user
 app.post("/users/:userid/compose", function(req, res){
   const userID = req.params.userid
-  const postUrl = "https://gorest.co.in/public/v1/users/"+userID+"/posts" + process.env.KEY
+  const postUrl = "https://gorest.co.in/public/v1/users/"+userID+"/posts" + key
   console.log(postUrl);
   const data = JSON.stringify({
     id: userID,
@@ -93,17 +95,20 @@ app.post("/users/:userid/compose", function(req, res){
     body: req.body.postBody
   })
 
-  axios.post(postUrl,data).then(res=>{
+  axios.post(postUrl,data,{
+    headers: {
+      'content-type': 'application/json'
+    }
+  }).then(res=>{
     console.log("Status Code: "+ res.status);
     console.log("Body: "+ res.data);
     res.write();
   }).catch(err=>{
     console.log(err);
   })
-
+  
   res.redirect("/users");
 });
-
 
 
 // Listening on port 3000
